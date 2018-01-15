@@ -27,7 +27,7 @@
         this.initRightFixedColumnScroller();
         this.initFixedHeaderScroller();
         this.disableFixedScroller();
-        this.initScrollBodyScroller();
+        // this.initScrollBodyScroller();
     }
 
     MobileFixedColumns.prototype = {
