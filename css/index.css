@@ -230,7 +230,7 @@ table {
   background-color: #fff;
 }
 .tableBody .detail .white2 .number {
-  font-weight: lighter;
+  font-weight: bold;
   color: #000;
   font-size: 0.50666667rem;
   padding: 5px 0;
