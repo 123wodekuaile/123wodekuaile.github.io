@@ -14,13 +14,17 @@ $(document).ready(function () {
         //正因为标记了itemNum才能准确的插在哪个后面
     }
 
+
+
+
     //真正写的时候可以判断按什么来渲染,点击左上方的时候该怎么渲染？
 
     render1(data);
     render2(data1);
     render3(data2);
-    // render2(data);
-    // render3(data);
+    renderRed();
+
+
     // 點擊一則報告，依次在兩個地方進行添加數據
     // 標題和內容
     var height = screen.height;
@@ -38,6 +42,92 @@ $(document).ready(function () {
     }
     flex1();
 
+    $("#item1 th").click(function () {
+        for(var i=1;i<15;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item2 th").click(function () {
+        for(var i=16;i<33;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item3 th").click(function () {
+        for(var i=34;i<47;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item4 th").click(function () {
+        for(var i=48;i<51;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item5 th").click(function () {
+        for(var i=52;i<60;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item6 th").click(function () {
+        for(var i=61;i<69;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item7 th").click(function () {
+        for(var i=70;i<74;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item8 th").click(function () {
+        for(var i=75;i<76;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item9 th").click(function () {
+        for(var i=77;i<84;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item10 th").click(function () {
+        for(var i=85;i<87;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item11 th").click(function () {
+        for(var i=88;i<89;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item12 th").click(function () {
+        for(var i=90;i<94;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+
+
     $(".tableToggle span").click(function () {
         $(this).addClass("active").siblings("span").removeClass("active");
     });
@@ -51,24 +141,24 @@ $(document).ready(function () {
     });
     $(".tableToggle span").eq(2).click(function () {
         $(".tableBody .detail").show();
-        $(".tableBody .title").find("th").addClass("red");
+        renderRed();
         $(".disper").hide();
         $(".tableBody .detail").addClass("wo");
         $(".wo").hide();
         $(".disper").show();
     });
 
-    $(".tableTop span").click(function () {
-        // 取消此次渲染
-        //重新渲染一次
-        var order =   $(this).parent().attr("class").split(" ")[0];
-        console.log(order);
-        if("first"===order){
-            $(this).siblings(".date").html("").siblings(".reportName").html("").siblings("span").remove();
+
+    $(".dataTables_scrollHeadInner").find(".first").find("span").click(function () {
+            $(this).siblings(".date").html("").siblings(".reportName").html("");
+            $(this).remove();
             $(".white1").html("");
-            //开始渲染新的
-            // render1(data1);
-        }
+            renderBlue(data);
+         //填充
+        //     renderrr1(data1);
+        //     //开始渲染新的
+        //     // render1(data1);
+        // }
     })
 });
 
@@ -1500,6 +1590,39 @@ function render1(data) {
         })
     }
 }
+function renderrr1(data) {
+    if(data.status=="true"){
+        var str = "<span class="+'cancel'+"></span>";
+        $this =  $(".dataTables_scrollHeadInner").find(".tableTop").find(".first");
+        $this.append(str);
+        var time = formatDate(data.reportTime);
+        $this.find(".date").text(time).siblings(".reportName").text(data.reportName);
+        $.each(data.itemList,function (i,v) {
+            num = v.type;
+            differ = getItemDiffer(v.type,v.value);
+            range = getItemRange(v.type,v.value);
+            val = v.value.split(",")[0];
+            if(range!==""){
+                if(val===""){
+                    s = "<p class="+'number'+">-</p>";
+                }else {
+                    s = "<p class="+'number'+">"+val+"</p><p class="+'unit'+">("+range+")</p>"
+                }
+            }else {
+                if(val===""){
+                    s = "<p class="+'number'+">-</p>";
+                }else {
+                    s = "<p class="+'number'+">"+val+"</p>"
+                }
+            }
+            $("."+num).siblings(".white1").html("rgfsaertg");
+            if((val=='異常') || (val=='异常') || differ==1){
+                $("."+num).siblings(".white1").find(".number").addClass("text-warning").parent().parent().addClass("disper");
+            }
+        })
+    }
+}
+
 
 
 function render2(data) {
@@ -1566,6 +1689,72 @@ function render3(data) {
         })
     }
 }
+
+
+//异常渲染
+function renderRed() {
+    var allNum =  $(".text-warning").parent().siblings("th");
+    var name = "";
+    var con=[];
+    for(var j=0;j<examType.length;j++){
+       for(var i=0;i<allNum.length;i++){
+           name = allNum[i].className;
+           if(examType[j][0]===name){
+               con.push(examType[j][2]);
+           }
+       }
+    }
+    var cont = unique(con);
+    for(var k=0;k<cont.length;k++){
+        $("#item"+cont[k]).find("th").addClass("red");
+    }
+}
+
+
+function renderBlue(data) {
+        var str = "<span class="+'cancel'+"></span>";
+        $(".dataTables_scrollHeadInner .p").parent().append(str);
+        var time = formatDate(data.reportTime);
+        $(".tableTop .first").find(".date").text(time).siblings(".reportName").text(data.reportName);
+        var t = $(".white1").siblings(".white2").length;
+        console.log($(".white2")[8]);
+        // for(var i=0;i<t;i++){
+        //
+        //     console.log($(".white2")[i].children.clone());
+        //     // $(".white2")[i].children;
+        // }
+        // $.each(data.itemList,function (i,v) {
+        //     num = v.type;
+        //     differ = getItemDiffer(v.type,v.value);
+        //     range = getItemRange(v.type,v.value);
+        //     val = v.value.split(",")[0];
+        //     if(range!==""){
+        //         if(val===""){
+        //             s = "<p class="+'number'+">-</p>";
+        //         }else {
+        //             s = "<p class="+'number'+">"+val+"</p><p class="+'unit'+">("+range+")</p>"
+        //         }
+        //     }else {
+        //         if(val===""){
+        //             s = "<p class="+'number'+">-</p>";
+        //         }else {
+        //             s = "<p class="+'number'+">"+val+"</p>"
+        //         }
+        //     }
+        //     if((val=='異常') || (val=='异常') || differ==1){
+        //         $("."+num).siblings(".white1").find(".number").addClass("text-warning").parent().parent().addClass("disper");
+        //     }
+        // })
+}
+function unique(array){
+    var n = [];//临时数组
+    for(var i = 0;i < array.length; i++){
+        if(n.indexOf(array[i]) == -1) n.push(array[i]);
+    }
+    return n;
+}
+
+
 // // 第二栏
 // function render2(data) {
 //     var time = formatDate(data.reportTime);
