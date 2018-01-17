@@ -23,6 +23,7 @@ $(document).ready(function () {
     render2(data1);
     render3(data2);
     renderRed();
+    toggle();
 
 
     // 點擊一則報告，依次在兩個地方進行添加數據
@@ -41,92 +42,6 @@ $(document).ready(function () {
         });
     }
     flex1();
-
-    $("#item1 th").click(function () {
-        for(var i=1;i<15;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item2 th").click(function () {
-        for(var i=16;i<33;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item3 th").click(function () {
-        for(var i=34;i<47;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item4 th").click(function () {
-        for(var i=48;i<51;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item5 th").click(function () {
-        for(var i=52;i<60;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item6 th").click(function () {
-        for(var i=61;i<69;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item7 th").click(function () {
-        for(var i=70;i<74;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item8 th").click(function () {
-        for(var i=75;i<76;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item9 th").click(function () {
-        for(var i=77;i<84;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item10 th").click(function () {
-        for(var i=85;i<87;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item11 th").click(function () {
-        for(var i=88;i<89;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-    $("#item12 th").click(function () {
-        for(var i=90;i<94;i++){
-            $(".tableBody tr").eq(i).toggle();
-            $(".white1").parent().parent().find("tr").eq(i).toggle();
-        }
-        $(this).toggleClass("yellow blue");
-    });
-
 
     $(".tableToggle span").click(function () {
         $(this).addClass("active").siblings("span").removeClass("active");
@@ -148,17 +63,37 @@ $(document).ready(function () {
         $(".disper").show();
     });
 
-
     $(".dataTables_scrollHeadInner").find(".first").find("span").click(function () {
-            $(this).siblings(".date").html("").siblings(".reportName").html("");
-            $(this).remove();
-            $(".white1").html("");
-            renderBlue(data);
-         //填充
-        //     renderrr1(data1);
-        //     //开始渲染新的
-        //     // render1(data1);
-        // }
+        var dataNum = $(".dataTables_scrollHeadInner").find("span").length;
+        if(dataNum===1){
+            alert("不能再删除了哦");
+        }else if(dataNum===2){
+            cancel("first","second");
+            $(".dataTables_scrollHeadInner").find(".second").find("img").show();
+            $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");
+        }else {
+            console.log("dadsasdas");
+        }
+    });
+
+
+    $(".dataTables_scrollHeadInner").find(".second").find("span").click(function () {
+        var dataNum = $(".dataTables_scrollHeadInner").find("span").length;
+        if(dataNum===2){
+            $(this).siblings("img").show();
+            $(this).parent().css("backgroundColor","#fff");
+            cancel("second");
+        }else {
+            cancel("second","third");
+            $(".dataTables_scrollHeadInner").find(".third").find("img").show();
+            $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
+        }
+    });
+    $(".dataTables_scrollHeadInner").find(".third").find("span").click(function () {
+        $(this).siblings("img").show();
+        $(this).parent().css("backgroundColor","#fff");
+        cancel("third");
+
     })
 });
 
@@ -203,7 +138,7 @@ var data = {
     },
         {
             "unit": "¤½¤À",
-            "value": "70,0,90",
+            "value": "15,0,90",
             "type": "101"
         },
         {
@@ -213,12 +148,12 @@ var data = {
         },
         {
             "unit": "mmHg",
-            "value": "70,60,90",
+            "value": "20,60,90",
             "type": "103"
         },
         {
             "unit": "103/uL",
-            "value": "5,4,10",
+            "value": "3,4,10",
             "type": "104"
         },
         {
@@ -253,7 +188,7 @@ var data = {
         },
         {
             "unit": "mg/dL",
-            "value": "190,130,200",
+            "value": "110,130,200",
             "type": "111"
         },
         {
@@ -333,7 +268,7 @@ var data = {
         },
         {
             "unit": "",
-            "value": "¥¿±`,¥¿±`,¥¿±`",
+            "value": "13,,",
             "type": "127"
         },
         {
@@ -630,7 +565,7 @@ var data1 = {
         },
         {
             "unit": "mmHg",
-            "value": "100,60,90",
+            "value": "70,60,90",
             "type": "103"
         },
         {
@@ -1713,11 +1648,22 @@ function renderRed() {
 
 function renderBlue(data) {
         var str = "<span class="+'cancel'+"></span>";
-        $(".dataTables_scrollHeadInner .p").parent().append(str);
-        var time = formatDate(data.reportTime);
-        $(".tableTop .first").find(".date").text(time).siblings(".reportName").text(data.reportName);
-        var t = $(".white1").siblings(".white2").length;
-        console.log($(".white2")[8]);
+        $(".dataTables_scrollHeadInner p").parent(".first").append(str);
+        var time = $(".second").find(".date").text();
+        var reportName = $(".second").find(".reportName").text();
+        //时间渲染
+        $(".tableTop .first").find(".date").text(time).siblings(".reportName").text(reportName);
+        //值的渲染
+        // $(".white1").find(".number").text($(".tableTop .second").find(".date").text());
+        for(var i=0;i<82;i++){
+            $this = $(".white1").eq(i);
+            $this.find(".number").text($this.siblings(".white2").find(".number").text());
+            $this.find(".unit").text($this.siblings(".white2").find(".unit").text());
+            if($this.siblings(".white2").find(".number").hasClass("text-warning")){
+                $this.find(".number").addClass("text-warning");
+            }
+        }
+
         // for(var i=0;i<t;i++){
         //
         //     console.log($(".white2")[i].children.clone());
@@ -1754,6 +1700,224 @@ function unique(array){
     return n;
 }
 
+function toggle() {
+    $("#item1 th").click(function () {
+        for(var i=1;i<15;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item2 th").click(function () {
+        for(var i=16;i<33;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item3 th").click(function () {
+        for(var i=34;i<47;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item4 th").click(function () {
+        for(var i=48;i<51;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item5 th").click(function () {
+        for(var i=52;i<60;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item6 th").click(function () {
+        for(var i=61;i<69;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item7 th").click(function () {
+        for(var i=70;i<74;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item8 th").click(function () {
+        for(var i=75;i<76;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item9 th").click(function () {
+        for(var i=77;i<84;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item10 th").click(function () {
+        for(var i=85;i<87;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item11 th").click(function () {
+        for(var i=88;i<89;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+    $("#item12 th").click(function () {
+        for(var i=90;i<94;i++){
+            $(".tableBody tr").eq(i).toggle();
+            $(".white1").parent().parent().find("tr").eq(i).toggle();
+        }
+        $(this).toggleClass("yellow blue");
+    });
+}
+
+
+
+// cancel事件
+//判断点击的是第几个，移动的就是第几个，
+//首先就是确定参数
+// 没目标只执行删除,不进行移动
+//所以就要先判定当前有几条健检报告
+// 当有一条没反应，且提醒
+// 有两条删除点1执行tar,点2只删除
+// 有三条第三条不执行，其余两条都执行tar,且移动第一次有两次转移
+// 例如cli=first,tar=second
+
+
+
+function tianChong(s,t) {
+    for(var i=0;i<82;i++){
+        $this = $("."+s).eq(i);
+        $this.find(".number").text($this.siblings("."+t).find(".number").text());
+        $this.find(".unit").text($this.siblings("."+t).find(".unit").text());
+        if($this.siblings("."+t).find(".number").hasClass("text-warning")){
+            $this.find(".number").addClass("text-warning");
+        }
+    }
+}
+
+
+function cancel(cli,tar) {
+    if(!tar){
+        $(".dataTables_scrollHeadInner").find("."+cli).find(".date").html("").siblings(".reportName").html("");
+        $(".dataTables_scrollHeadInner").find("."+cli).find("span").remove();
+        // 只是删除的话是remove 替换的话是替换
+        if(cli==="first"){
+            $(".white1").html("");
+        }else if(cli==="second"){
+            $(".white2").html("");
+        }else {
+            $(".white3").html("");
+        }
+    }else {
+        //如果还有填充的
+        if(cli=="first"){
+            if($(".white1").find(".number").hasClass("text-warning")){
+                $(".white1").find(".number").removeClass("text-warning");
+            }
+            var time = $("."+tar).find(".date").text();
+            var reportName = $("."+tar).find(".reportName").text();
+            $(".dataTables_scrollHeadInner").find("."+cli).find(".date").html(time).siblings(".reportName").html(reportName);
+            tianChong("white1","white2");
+            $(".dataTables_scrollHeadInner").find("."+tar).find(".date").html("").siblings(".reportName").html("");
+            $(".dataTables_scrollHeadInner").find("."+tar).find("span").remove();
+            $(".white2").html("");
+        }else if(cli==="second") {
+            if($(".white2").find(".number").hasClass("text-warning")){
+                $(".white2").find(".number").removeClass("text-warning");
+            }
+            var time = $("."+tar).find(".date").text();
+            var reportName = $("."+tar).find(".reportName").text();
+            $(".dataTables_scrollHeadInner").find("."+cli).find(".date").html(time).siblings(".reportName").html(reportName);
+            tianChong("white2","white3");
+            $(".dataTables_scrollHeadInner").find("."+tar).find(".date").html("").siblings(".reportName").html("");
+            $(".dataTables_scrollHeadInner").find("."+tar).find("span").remove();
+            $(".white3").html("");
+         }
+    }
+
+
+
+
+    // if(!tar){
+    //     //如果只是单纯的删除
+    //     //下面异常显示的归为初始化
+    //
+    //     if(cli=="first"){
+    //         if($(".white1").find(".number").hasClass("text-warning")){
+    //             $(".white1").find(".number").removeClass("text-warning");
+    //         }
+    //     }else if(cli==="second") {
+    //         if($(".white2").find(".number").hasClass("text-warning")){
+    //             $(".white2").find(".number").removeClass("text-warning");
+    //         }
+    //         $(".white2").html("");
+    //     }else {
+    //         $(".white3").html();
+    //     }
+    // }
+    //
+    // else {
+    //     //不是单纯的删除，并带滑动
+    //     var time = $("."+tar).find(".date").text();
+    //     var reportName = $("."+tar).find(".reportName").text();
+    //     $(".dataTables_scrollHeadInner").find("."+cli).find(".date").html(time).siblings(".reportName").html(reportName);
+    //     $(".dataTables_scrollHeadInner").find("."+cli).find("span").remove();
+    //
+    //     var str = "<span class="+'cancel'+"></span>";
+    //     $(".dataTables_scrollHeadInner p").parent("."+cli).append(str);
+    //     //时间渲染
+    //     $(".tableTop ."+cli).find(".date").text(time).siblings(".reportName").text(reportName);
+    //     //值的渲染
+    //     // $(".white1").find(".number").text($(".tableTop .second").find(".date").text());
+    //     if(cli==="first"){
+    //         center = ".white1";
+    //         center1 = ".white2"
+    //     }else if(cli==="second"){
+    //         center = ".white2";
+    //         center1 = ".white3"
+    //     }else {
+    //         center = ".white3"
+    //     }
+    //     for(var i=0;i<82;i++){
+    //         $this = $(center).eq(i);
+    //         $this.find(".number").text($this.siblings(center1).find(".number").text());
+    //         $this.find(".unit").text($this.siblings(center1).find(".unit").text());
+    //         if($this.siblings(center1).find(".number").hasClass("text-warning")){
+    //             $this.find(".number").addClass("text-warning");
+    //         }
+    //     }
+    //     $(".dataTables_scrollHeadInner").find("."+tar).find(".date").html("").siblings(".reportName").html("");
+    //     $(".dataTables_scrollHeadInner").find("."+tar).find("span").remove();
+    //     if(tar==="second") {
+    //         if($(".white2").find(".number").hasClass("text-warning")){
+    //             $(".white2").find(".number").removeClass("text-warning");
+    //         }
+    //             $(".white2").html("");
+    //         }else if(tar==="third"){
+    //             if($(".white3").find(".number").hasClass("text-warning")){
+    //                 $(".white3").find(".number").removeClass("text-warning");
+    //             }
+    //             $(".white3").html("");
+    //         }
+    //     }
+}
 
 // // 第二栏
 // function render2(data) {
