@@ -6,6 +6,11 @@ html,
 body {
   height: 100%;
 }
+ul,
+li {
+  list-style: none;
+  border: none;
+}
 .clearfix:after {
   content: "";
   display: block;
@@ -89,6 +94,16 @@ tfoot {
 body {
   background-color: #fff;
   font-size: 0.42666667rem;
+  position: relative;
+}
+.mask {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  background-color: #000;
+  opacity: 0.4;
 }
 .bigBox {
   width: 120%;
@@ -101,7 +116,7 @@ table {
   height: 3.06666667rem;
   border-right: 1px solid #D3D8DE;
   border-bottom: 1px solid #D3D8DE;
-  background-color: #F1FEF4;
+  background-color: #fff;
   position: relative;
 }
 .tableTop th:nth-child(4) {
@@ -124,6 +139,11 @@ table {
   background-size: 0.45rem;
   right: 6px;
   top: 6px;
+}
+.tableTop th .empty {
+  opacity: 0;
+  position: absolute;
+  bottom: 0;
 }
 .tableTop .tableToggle {
   border-right: 1px solid #D3D8DE;
@@ -214,7 +234,7 @@ table {
   background-color: #fff;
 }
 .tableBody .detail .white1 .number {
-  font-weight: bold;
+  font-weight: lighter;
   color: #000;
   font-size: 0.50666667rem;
   padding: 5px 0;
@@ -230,7 +250,7 @@ table {
   background-color: #fff;
 }
 .tableBody .detail .white2 .number {
-  font-weight: bold;
+  font-weight: lighter;
   color: #000;
   font-size: 0.50666667rem;
   padding: 5px 0;
@@ -246,7 +266,7 @@ table {
   background-color: #fff;
 }
 .tableBody .detail .white3 .number {
-  font-weight: bold;
+  font-weight: lighter;
   color: #000;
   font-size: 0.50666667rem;
   padding: 5px 0;
@@ -258,9 +278,24 @@ table {
 .tableBody .detail .white3 .text-warning {
   color: #ED4A4D;
 }
-.mask {
+.container {
   width: 100%;
-  height: 100%;
-  z-index: 1500;
-  background-color: pink;
+  position: absolute;
+  display: none;
+  z-index: 1001;
+  background-color: #fff;
+  box-shadow: 5px 2px 3px 2px  #5C5C5E;
+}
+.container ul {
+  width: 100%;
+}
+.container ul li {
+  height: 50px;
+  width: 100%;
+  text-align: center;
+  line-height: 60px;
+  border-bottom: 1px solid #D3D8DE;
+}
+.container ul .template {
+  display: none;
 }

@@ -8,6 +8,7 @@
     <script src="./build/jquery.1.7.2.min.js"></script>
 </head>
 <body>
+<div class="mask"></div>
 <div>
     <table cellspacing="0" cellpadding="0" id="bigBox">
         <!--头部-->
@@ -21,17 +22,17 @@
             <th class="first">
                 <p class="date"></p>
                 <p class="reportName"></p>
-                <img src="./jia.jpg" alt="" style="display:none; width: 1rem">
+                <img src="./jia.jpg" alt="" style="width: 1rem">
             </th>
             <th class="second">
                 <p class="date"></p>
                 <p class="reportName"></p>
-                <img src="./jia.jpg" alt="" style="display:none; width: 1rem">
+                <img src="./jia.jpg" alt="" style="width: 1rem">
             </th>
             <th class="third">
                 <p class="date"></p>
                 <p class="reportName"></p>
-                <img src="./jia.jpg" alt="" style="display:none; width: 1rem">
+                <img src="./jia.jpg" alt="" style="width: 1rem">
             </th>
         </tr>
         </thead>
@@ -167,6 +168,11 @@
 
         </tbody>
     </table>
+    <div class="container" id="reportList">
+        <ul>
+            <li class="template"></li>
+        </ul>
+    </div>
 </div>
 
 
@@ -179,8 +185,8 @@
 <!-- 测试过的版本 4.2.5 -->
 <script src="./build/iscroll.js"></script>
 <script src="./build/mobile-fixed-columns-table.js"></script>
-<!--<script src="./healthReport_mobile.js"></script>-->
-<script src="./healthReport_mobile.js"></script>
+<!--<script src="./healthReportCompare.js"></script>-->
+<script src="healthReport_mobile.js"></script>
 
 
 </html>
