@@ -296,6 +296,11 @@ table {
   line-height: 60px;
   border-bottom: 1px solid #D3D8DE;
 }
+.container ul li .littleId {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+}
 .container ul .template {
   display: none;
 }
