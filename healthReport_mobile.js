@@ -72,7 +72,7 @@ $(document).ready(function () {
              render2(dataMain.reportList[biaoji]);
              console.log("我要渲染第二行");
          }else if(addIndex=="2"){
-             render4(dataMain.reportList[biaoji]);
+             render3(dataMain.reportList[biaoji]);
              console.log("我要渲染第三行");
          }
          //点击确定
