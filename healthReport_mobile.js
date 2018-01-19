@@ -1,11 +1,11 @@
 $(document).ready(function () {
 
-
+// "<tr class="+'detail'+">"
     //左侧边框填充
     for(var i=0;i<examType.length;i++){
         var itemNum = examType[i][2];
         var typeNum =examType[i][0];
-        var str = "<tr class="+'detail'+">" +
+        var str = "<tr class='detail "+typeNum+"'>" +
             "<th class="+typeNum+">"+examType[i][1]+"</th>" +
             "<td class="+'white1'+"></td>" +
             "<td class="+'white2'+"></td>" +
@@ -15,49 +15,14 @@ $(document).ready(function () {
         $(".tableBody .title").find("th").addClass("blue");
         //正因为标记了itemNum才能准确的插在哪个后面
     }
+    $(".detail").addClass
     //先发送请求得到所需的数据，然后渲染
 
     var reportIds = [];
     request(dataMain);
     renderRed();
     toggle();
-    $(".tableTop img").click(function(){
-        //令reportId始终不变,开始是什么,一直都是什么
-        // arrCopy = getReportId(dataMain);
-        // console.log(arrCopy);
-
-        // var nArr=[];
-        // var n;
-    
-        $(".mask").show();
-        // //得出所有已显示的报告
-        // n = $(".tableTop i").length;
-        // for(var  i=0;i<n;i++){
-        //     nArr.push($(".tableTop i").eq(i).text());
-        // }
-        // for(var j=0;j<nArr.length;j++){
-        //     // removeNum(reportIds,nArr[j]);
-        // }
-        //然后container置为显示,再填充。
-        $(".container").css({"bottom":"0"}).slideDown("fast");
-        innerContainer(reportIds);
-        $(".mask").bind('click', function() {
-            //点击的不是div或其子元素
-            $('.container').hide();
-            $(".mask").hide();
-        });
-        $(".container .cut").click(function () {
-            $(this).css({"backgroundColor":"#99CC99","color":"#000"});
-        var index = $(this).index();
-
-        //点击确定
-        $('.container').slideUp();
-        $(".mask").hide();
-    });
-    });
-
-    
-
+    del();
     //此时再点击加号的时候,循环此时的reportId
 
 
@@ -82,6 +47,63 @@ $(document).ready(function () {
         });
     }
 
+    //点击添加新的健检报告
+    $(".tableTop img").click(function(){
+        var addIndex = $(this).parent().index();
+        $(".mask").show();
+        $(".container").css({"bottom":"0"}).slideDown("fast");
+        innerContainer(reportIds);
+        $(".mask").bind('click', function() {
+            //点击的不是div或其子元素
+            $('.container').hide();
+            $(".mask").hide();
+        });
+
+         $(".container .cut").click(function() {
+         $(this).css({"backgroundColor":"#99CC99","color":"#000"});
+         var lireportId = $(this).find(".littleId").text();
+         var bioaji = "";
+         for(var i=0;i<dataMain.reportList.length;i++){
+             if(dataMain.reportList[i].reportId===lireportId){
+                 biaoji = i;
+             }
+         }
+         if(addIndex=="1"){
+             render2(dataMain.reportList[biaoji]);
+             console.log("我要渲染第二行");
+         }else if(addIndex=="2"){
+             render4(dataMain.reportList[biaoji]);
+             console.log("我要渲染第三行");
+         }
+         //点击确定
+         $('.container').slideUp("fast");
+         $(".mask").hide();
+        $(".tableTop").find(".second").find("span").click(function () {
+        var dataNum = $(".dataTables_scrollHeadInner").find("span").length;
+            if(dataNum===2){
+                $(this).siblings("img").show();
+                $(this).parent().css("backgroundColor","#fff");
+                cancel("second");
+            }else {
+                cancel("second","third");
+                $(".dataTables_scrollHeadInner").find(".third").find("img").show();
+                $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
+            }
+        });
+        $(".tableTop").find(".third").find("span").click(function () {
+            $(this).siblings("img").show();
+            $(this).parent().css("backgroundColor","#fff");
+            cancel("third");
+        });
+    });
+ });
+
+    //点击列表中的li,进行渲染。
+    
+    
+
+
+
     //左上角切换事事件
     $(".tableToggle span").click(function () {
         $(this).addClass("active").siblings("span").removeClass("active");
@@ -105,8 +127,11 @@ $(document).ready(function () {
     });
 
 
+
     //点击减号删除
-    $(".dataTables_scrollHeadInner").find(".first").find("span").click(function () {
+
+    function del(){
+    $(".tableTop").find(".first").find("span").click(function () {
         var dataNum = $(".dataTables_scrollHeadInner").find("span").length;
         if(dataNum===1){
             alert("不能再删除了哦");
@@ -137,7 +162,7 @@ $(document).ready(function () {
 
         }
     });
-    $(".dataTables_scrollHeadInner").find(".second").find("span").click(function () {
+    $(".tableTop").find(".second").find("span").click(function () {
         var dataNum = $(".dataTables_scrollHeadInner").find("span").length;
         if(dataNum===2){
             $(this).siblings("img").show();
@@ -149,11 +174,12 @@ $(document).ready(function () {
             $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
         }
     });
-    $(".dataTables_scrollHeadInner").find(".third").find("span").click(function () {
+    $(".tableTop").find(".third").find("span").click(function () {
         $(this).siblings("img").show();
         $(this).parent().css("backgroundColor","#fff");
         cancel("third");
     });
+    }
 
     //初始填充请求
     function request(data){
@@ -162,6 +188,8 @@ $(document).ready(function () {
             render2(data.reportList[1]);
             if(data.reportList.length>2){
                 render3(data.reportList[2]);
+            }else {
+                $(".tableTop").find(".third").find("img").hide();
             }
             for(var i=0;i<data.reportList.length;i++){
                 reportIds.push(data.reportList[i].reportId);
@@ -175,8 +203,8 @@ $(document).ready(function () {
 function render1(data) {
         var str = "<span class="+'cancel'+"></span>";
         var st = "<i class='empty'>"+data.reportId+"</i>";
-        $(".tableTop .first").append(st);
-        $(".tableTop .first").append(str);
+        $(".tableTop .first").eq(0).append(st);
+        $(".tableTop .first").eq(0).append(str);
         var time = formatDate(data.reportTime);
         $(".tableTop .first").find(".date").text(time).siblings(".reportName").text(data.reportName);
         $(".tableTop .first").css("backgroundColor","#F1FEF4").find("img").hide();
@@ -198,9 +226,9 @@ function render1(data) {
                     s = "<p class="+'number'+">"+val+"</p>"
                 }
             }
-            $("."+num).siblings(".white1").html(s);
+            $("tr."+num).find(".white1").html(s);
             if((val=='異常') || (val=='异常') || differ==1){
-                $("."+num).siblings(".white1").find(".number").addClass("text-warning").parent().parent().addClass("disper");
+                $("tr."+num).find(".white1").find(".number").addClass("text-warning").parent().parent().addClass("disper");
             }
         });
     }
@@ -209,12 +237,12 @@ function render1(data) {
 function render2(data) {
         var str = "<span class="+'cancel'+"></span>";
         var st = "<i class='empty'>"+data.reportId+"</i>";
-        $(".tableTop .second").append(st);
-        $(".tableTop .second").append(str);
+        $(".tableTop .second").eq(0).append(st);
+        $(".tableTop .second").eq(0).append(str);
         var time = formatDate(data.reportTime);
         $(".tableTop .second").find(".date").text(time).siblings(".reportName").text(data.reportName);
         $(".tableTop .second").css("backgroundColor","#F1FEF4").find("img").hide();
-        $.each(data.itemList,function (i,v) {
+        $.each(data.itemList,function (i,v){
             num = v.type;
             differ = getItemDiffer(v.type,v.value);
             range = getItemRange(v.type,v.value);
@@ -232,9 +260,9 @@ function render2(data) {
                     s = "<p class="+'number'+">"+val+"</p>"
                 }
             }
-            $("."+num).siblings(".white2").html(s);
+            $("tr."+num).find(".white2").html(s);
             if((val=='異常') || (val=='异常') || differ==1){
-                $("."+num).siblings(".white2").find(".number").addClass("text-warning").parent().parent().addClass("disper");
+                $("tr."+num).find(".white2").find(".number").addClass("text-warning").parent().parent().addClass("disper");
             }
         })
 
@@ -244,8 +272,8 @@ function render2(data) {
 function render3(data) {
         var str = "<span class="+'cancel'+"></span>";
         var st = "<i class='empty'>"+data.reportId+"</i>";
-        $(".tableTop .third").append(st);
-        $(".tableTop .third").append(str);
+        $(".tableTop .third").eq(0).append(st);
+        $(".tableTop .third").eq(0).append(str);
         var time = formatDate(data.reportTime);
         $(".tableTop .third").find(".date").text(time).siblings(".reportName").text(data.reportName);
         $(".tableTop .third").css("backgroundColor","#F1FEF4").find("img").hide();
@@ -267,13 +295,46 @@ function render3(data) {
                     s = "<p class="+'number'+">"+val+"</p>"
                 }
             }
-            $("."+num).siblings(".white3").html(s);
+            $("tr."+num).find(".white3").html(s);
             if((val=='異常') || (val=='异常') || differ==1){
-                $("."+num).siblings(".white3").find(".number").addClass("text-warning").parent().parent().addClass("disper");
+                $("tr."+num).find(".white3").find(".number").addClass("text-warning").parent().parent().addClass("disper");
             }
         })
 }
 
+
+function render4(data){
+        var str = "<span class="+'cancel'+"></span>";
+        var st = "<i class='empty'>"+data.reportId+"</i>";
+        $(".tableTop .third").eq(0).append(st);
+        $(".tableTop .third").eq(0).append(str);
+        var time = formatDate(data.reportTime);
+        $(".tableTop .third").find(".date").text(time).siblings(".reportName").text(data.reportName);
+        $(".tableTop .third").css("backgroundColor","#F1FEF4").find("img").hide();
+        $.each(data.itemList,function (i,v) {
+            num = v.type;
+            differ = getItemDiffer(v.type,v.value);
+            range = getItemRange(v.type,v.value);
+            val = v.value.split(",")[0];
+            if(range!==""){
+                if(val===""){
+                    s = "<p class="+'number'+">-</p>";
+                }else {
+                    s = "<p class="+'number'+">"+val+"</p><p class="+'unit'+">("+range+")</p>"
+                }
+            }else {
+                if(val===""){
+                    s = "<p class="+'number'+">-</p>";
+                }else {
+                    s = "<p class="+'number'+">"+val+"</p>"
+                }
+            }
+                $("tr."+num).find(".white3").html(s);
+                if((val=='異常') || (val=='异常') || differ==1){
+                $("tr."+num).find(".white3").find(".number").addClass("text-warning").parent().parent().addClass("disper");
+            }
+    })
+}
 //异常渲染
 function renderRed() {
         var allNum =  $(".text-warning").parent().siblings("th");
@@ -313,13 +374,13 @@ function innerContainer(arr) {
                     }
                 }
            }
-            console.log(arr2);
                 // 已经得到最新的arr
                 for(var i=0;i<arr2.length;i++){
                   var $tt = $(".container .template").clone().removeClass("template").addClass("cut");
                     for(var j=0;j<dataMain.reportList.length;j++){
                         if(dataMain.reportList[j].reportId===arr2[i]){
-                            $tt.text(dataMain.reportList[j].reportName);
+                            $tt.find(".littleName").text(dataMain.reportList[j].reportName);
+                            $tt.find(".littleId").text(dataMain.reportList[j].reportId);
                         }
                     } 
                 $(".container ul").append($tt);                    
@@ -367,15 +428,15 @@ var dataMain= {
                 "unit": "",
                 "value": "77,18.5,24",
                 "type": "100"
-            },
+                },
                 {
                     "unit": "¤½¤À",
-                    "value": "15,0,90",
+                    "value": "120,0,90",
                     "type": "101"
                 },
                 {
                     "unit": "mmHg",
-                    "value": "120,90,140",
+                    "value": "10,90,140",
                     "type": "102"
                 },
                 {
@@ -1602,6 +1663,420 @@ var dataMain= {
                     "value": "0.72,0,4",
                     "type": "181"
                 }]
+        },
+                    {"reportId":"66666",
+            "reportTime":1510639803015,
+            "reportName":"长林王健检报告",
+            "itemList": [{
+                "unit": "",
+                "value": "77,18.5,24",
+                "type": "100"
+            },
+                {
+                    "unit": "¤½¤À",
+                    "value": "15,0,90",
+                    "type": "101"
+                },
+                {
+                    "unit": "mmHg",
+                    "value": "120,90,140",
+                    "type": "102"
+                },
+                {
+                    "unit": "mmHg",
+                    "value": "20,60,90",
+                    "type": "103"
+                },
+                {
+                    "unit": "103/uL",
+                    "value": "3,4,10",
+                    "type": "104"
+                },
+                {
+                    "unit": "g/dL",
+                    "value": "12,13,18",
+                    "type": "105"
+                },
+                {
+                    "unit": "",
+                    "value": ",,",
+                    "type": "106"
+                },
+                {
+                    "unit": "",
+                    "value": ",,",
+                    "type": "107"
+                },
+                {
+                    "unit": "IU/L",
+                    "value": "23,14,40",
+                    "type": "108"
+                },
+                {
+                    "unit": "mg/dL",
+                    "value": "0.1,0.4,1.2",
+                    "type": "109"
+                },
+                {
+                    "unit": "mg/dL",
+                    "value": "98,70,99",
+                    "type": "110"
+                },
+                {
+                    "unit": "mg/dL",
+                    "value": "110,130,200",
+                    "type": "111"
+                },
+                {
+                    "unit": "mg/dL",
+                    "value": "100,35,150",
+                    "type": "112"
+                },
+                {
+                    "unit": "mg/dL",
+                    "value": "35,40,",
+                    "type": "113"
+                },
+                {
+                    "unit": "mg/dL",
+                    "value": "90,,130",
+                    "type": "114"
+                },
+                {
+                    "unit": "",
+                    "value": "-,-,-",
+                    "type": "115"
+                },
+                {
+                    "unit": "",
+                    "value": "-,-,-",
+                    "type": "116"
+                },
+                {
+                    "unit": "",
+                    "value": "µL©úÅã²§±`,µL©úÅã²§±`,µL©úÅã²§±`",
+                    "type": "117"
+                },
+                {
+                    "unit": "cm",
+                    "value": "156,,",
+                    "type": "118"
+                },
+                {
+                    "unit": "kg",
+                    "value": "52,,",
+                    "type": "119"
+                },
+                {
+                    "unit": "¦¸/¤À",
+                    "value": "80,,90",
+                    "type": "120"
+                },
+                {
+                    "unit": "",
+                    "value": ",,",
+                    "type": "121"
+                },
+                {
+                    "unit": "",
+                    "value": ",,",
+                    "type": "122"
+                },
+                {
+                    "unit": "",
+                    "value": ",,",
+                    "type": "123"
+                },
+                {
+                    "unit": "",
+                    "value": ",,",
+                    "type": "124"
+                },
+                {
+                    "unit": "",
+                    "value": "¥¿±`,¥¿±`,¥¿±`",
+                    "type": "125"
+                },
+                {
+                    "unit": "",
+                    "value": "¥¿±`,¥¿±`,¥¿±`",
+                    "type": "126"
+                },
+                {
+                    "unit": "",
+                    "value": "13,,",
+                    "type": "127"
+                },
+                {
+                    "unit": "",
+                    "value": "-AO5,-,-",
+                    "type": "128"
+                },
+                {
+                    "unit": "mg/dL",
+                    "value": "1.2,0.4,1.2",
+                    "type": "129"
+                },
+                {
+                    "unit": "",
+                    "value": "µL©úÅã²§±`,µL©úÅã²§±`,µL©úÅã²§±`",
+                    "type": "130"
+                },
+                {
+                    "unit": "",
+                    "value": "µL©úÅã²§±`,µL©úÅã²§±`,µL©úÅã²§±`",
+                    "type": "131"
+                },
+                {
+                    "unit": "",
+                    "value": "µL©úÅã²§±`,µL©úÅã²§±`,µL©úÅã²§±`",
+                    "type": "132"
+                },
+                {
+                    "unit": "",
+                    "value": "µL©úÅã²§±`,µL©úÅã²§±`,µL©úÅã²§±`",
+                    "type": "133"
+                },
+                {
+                    "unit": "",
+                    "value": "µL©úÅã²§±`,µL©úÅã²§±`,µL©úÅã²§±`",
+                    "type": "134"
+                },
+                {
+                    "unit": "",
+                    "value": "µL©úÅã²§±`,µL©úÅã²§±`,µL©úÅã²§±`",
+                    "type": "135"
+                },
+                {
+                    "unit": "",
+                    "value": "µL©úÅã²§±`,µL©úÅã²§±`,µL©úÅã²§±`",
+                    "type": "136"
+                },
+                {
+                    "unit": "mg/dL",
+                    "value": ",100,140",
+                    "type": "137"
+                },
+                {
+                    "unit": "",
+                    "value": ",³±©Ê|¶§©Ê,³±©Ê|¶§©Ê",
+                    "type": "138"
+                },
+                {
+                    "unit": "",
+                    "value": ",³±©Ê|¶§©Ê,³±©Ê|¶§©Ê",
+                    "type": "139"
+                },
+                {
+                    "unit": "g/dl",
+                    "value": "7,6,8.3",
+                    "type": "140"
+                },
+                {
+                    "unit": "g/dl",
+                    "value": "5,4.2,5.5",
+                    "type": "141"
+                },
+                {
+                    "unit": "g/dl",
+                    "value": "2.7,2,3",
+                    "type": "142"
+                },
+                {
+                    "unit": "",
+                    "value": "1.85,1.1,2.5",
+                    "type": "143"
+                },
+                {
+                    "unit": "ml/min",
+                    "value": "108,90,9999",
+                    "type": "144"
+                },
+                {
+                    "unit": "",
+                    "value": "1.03,1,1.03",
+                    "type": "145"
+                },
+                {
+                    "unit": "",
+                    "value": "-,-,-",
+                    "type": "146"
+                },
+                {
+                    "unit": "",
+                    "value": "Normal,-,-",
+                    "type": "147"
+                },
+                {
+                    "unit": "",
+                    "value": "-,-,-",
+                    "type": "148"
+                },
+                {
+                    "unit": "",
+                    "value": "-,-,-",
+                    "type": "149"
+                },
+                {
+                    "unit": "",
+                    "value": "6.5,5,8",
+                    "type": "150"
+                },
+                {
+                    "unit": "",
+                    "value": "-,-,-",
+                    "type": "151"
+                },
+                {
+                    "unit": "HPF",
+                    "value": "2,0,4",
+                    "type": "152"
+                },
+                {
+                    "unit": "HPF",
+                    "value": "5,0,4",
+                    "type": "153"
+                },
+                {
+                    "unit": "HPF",
+                    "value": "5,0,4",
+                    "type": "154"
+                },
+                {
+                    "unit": "HPF",
+                    "value": "0,0,1",
+                    "type": "155"
+                },
+                {
+                    "unit": "LPF",
+                    "value": "(-),-,-",
+                    "type": "156"
+                },
+                {
+                    "unit": "LPF",
+                    "value": "(-),-,-",
+                    "type": "157"
+                },
+                {
+                    "unit": "HPF",
+                    "value": "(-),-,-",
+                    "type": "158"
+                },
+                {
+                    "unit": "M/UL",
+                    "value": "5.45,4.27,5.49",
+                    "type": "159"
+                },
+                {
+                    "unit": "%",
+                    "value": "48.7,40|34,54|50",
+                    "type": "160"
+                },
+                {
+                    "unit": "%",
+                    "value": "40.2,43.2,71.5",
+                    "type": "161"
+                },
+                {
+                    "unit": "%",
+                    "value": "45.7,16.8,43.399",
+                    "type": "162"
+                },
+                {
+                    "unit": "%",
+                    "value": "7.2,4.6,12.4",
+                    "type": "163"
+                },
+                {
+                    "unit": "%",
+                    "value": "1.1,0.2,1.2",
+                    "type": "164"
+                },
+                {
+                    "unit": "%",
+                    "value": "5.8,0.7,7.8",
+                    "type": "165"
+                },
+                {
+                    "unit": "k/UL",
+                    "value": "235,165,353",
+                    "type": "166"
+                },
+                {
+                    "unit": "pg",
+                    "value": "29.3,26.8,33",
+                    "type": "167"
+                },
+                {
+                    "unit": "fl",
+                    "value": "89.4,79.299,100",
+                    "type": "168"
+                },
+                {
+                    "unit": "g/dl",
+                    "value": "32.7,32,36",
+                    "type": "169"
+                },
+                {
+                    "unit": "U/L",
+                    "value": "28,29,103",
+                    "type": "170"
+                },
+                {
+                    "unit": "mg/dl",
+                    "value": "0.8,0.3,1",
+                    "type": "171"
+                },
+                {
+                    "unit": "mg/dl",
+                    "value": "0.15,0.03,0.18",
+                    "type": "172"
+                },
+                {
+                    "unit": "U/L",
+                    "value": "10,13,39",
+                    "type": "173"
+                },
+                {
+                    "unit": "IU/L",
+                    "value": "22,9,64",
+                    "type": "174"
+                },
+                {
+                    "unit": "mg/dl",
+                    "value": "9.2,8.6,10.3",
+                    "type": "175"
+                },
+                {
+                    "unit": "mg/dl",
+                    "value": "3.5,2.5,5",
+                    "type": "176"
+                },
+                {
+                    "unit": "ug/dl",
+                    "value": "8.26,5.7,10.91",
+                    "type": "177"
+                },
+                {
+                    "unit": "ng/ml",
+                    "value": "0.67,0,5",
+                    "type": "178"
+                },
+                {
+                    "unit": "ng/ml",
+                    "value": "3.12,0,13.4",
+                    "type": "179"
+                },
+                {
+                    "unit": "U/ml",
+                    "value": "4.65,0,27",
+                    "type": "180"
+                },
+                {
+                    "unit": "ng/ml",
+                    "value": "0.72,0,4",
+                    "type": "181"
+                }]
         }
         ]
     }
@@ -1862,9 +2337,9 @@ function tianChong(s,t) {
 
 function cancel(cli,tar) {
     if(!tar){
-        $(".dataTables_scrollHeadInner").find("."+cli).find(".date").html("").siblings(".reportName").html("");
-        $(".dataTables_scrollHeadInner").find("."+cli).find("span").remove();
-        $(".dataTables_scrollHeadInner").find("."+cli).find("i").remove();
+        $(".tableTop").find("."+cli).find(".date").html("").siblings(".reportName").html("");
+        $(".tableTop").find("."+cli).find("span").remove();
+        $(".tableTop").find("."+cli).find("i").remove();
         // 只是删除的话是remove 替换的话是替换
         if(cli==="first"){
             $(".white1").html("");
@@ -1882,12 +2357,12 @@ function cancel(cli,tar) {
             var time = $("."+tar).find(".date").text();
             var reportName = $("."+tar).find(".reportName").text();
             var ii = $("."+tar).find("i").text();
-            $(".dataTables_scrollHeadInner").find("."+cli).find(".date").html(time).siblings(".reportName").html(reportName);
-            $(".dataTables_scrollHeadInner").find("."+cli).find("i").html(ii);
+            $(".tableTop").find("."+cli).find(".date").html(time).siblings(".reportName").html(reportName);
+            $(".tableTop").find("."+cli).find("i").html(ii);
             tianChong("white1","white2");
-            $(".dataTables_scrollHeadInner").find("."+tar).find(".date").html("").siblings(".reportName").html("");
-            $(".dataTables_scrollHeadInner").find("."+tar).find("span").remove();
-            $(".dataTables_scrollHeadInner").find("."+tar).find("i").remove();
+            $(".tableTop").find("."+tar).find(".date").html("").siblings(".reportName").html("");
+            $(".tableTop").find("."+tar).find("span").remove();
+            $(".tableTop").find("."+tar).find("i").remove();
             $(".white2").html("");
         }else if(cli==="second") {
             if($(".white2").find(".number").hasClass("text-warning")){
@@ -1896,15 +2371,17 @@ function cancel(cli,tar) {
             var time = $("."+tar).find(".date").text();
             var reportName = $("."+tar).find(".reportName").text();
             var ii = $("."+tar).find("i").text();
-            $(".dataTables_scrollHeadInner").find("."+cli).find(".date").html(time).siblings(".reportName").html(reportName);
-            $(".dataTables_scrollHeadInner").find("."+cli).find("i").html(ii);
+            $(".tableTop").find("."+cli).find(".date").html(time).siblings(".reportName").html(reportName);
+            $(".tableTop").find("."+cli).find("i").html(ii);
             tianChong("white2","white3");
-            $(".dataTables_scrollHeadInner").find("."+tar).find(".date").html("").siblings(".reportName").html("");
-            $(".dataTables_scrollHeadInner").find("."+tar).find("span").remove();
-            $(".dataTables_scrollHeadInner").find("."+tar).find("i").remove();
+            $(".tableTop").find("."+tar).find(".date").html("").siblings(".reportName").html("");
+            $(".tableTop").find("."+tar).find("span").remove();
+            $(".tableTop").find("."+tar).find("i").remove();
             $(".white3").html("");
          }
     }
 
 }
+
+
 
