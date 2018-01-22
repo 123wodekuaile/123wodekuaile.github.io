@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+
 // "<tr class="+'detail'+">"
     //左侧边框填充
     for(var i=0;i<examType.length;i++){
@@ -15,14 +16,14 @@ $(document).ready(function () {
         $(".tableBody .title").find("th").addClass("blue");
         //正因为标记了itemNum才能准确的插在哪个后面
     }
-    $(".detail").addClass
     //先发送请求得到所需的数据，然后渲染
 
     var reportIds = [];
     request(dataMain);
     renderRed();
     toggle();
-    del();
+    delAfter();
+
     //此时再点击加号的时候,循环此时的reportId
 
 
@@ -51,15 +52,15 @@ $(document).ready(function () {
     $(".tableTop img").click(function(){
         var addIndex = $(this).parent().index();
         $(".mask").show();
-        $(".container").css({"bottom":"0"}).slideDown("fast");
         innerContainer(reportIds);
+        $(".container").css({"bottom":"0"}).slideDown("fast");
+
         $(".mask").bind('click', function() {
             //点击的不是div或其子元素
             $('.container').hide();
             $(".mask").hide();
         });
-
-         $(".container .cut").click(function() {
+                $(".container .cut").click(function() {
          $(this).css({"backgroundColor":"#99CC99","color":"#000"});
          var lireportId = $(this).find(".littleId").text();
          var bioaji = "";
@@ -67,6 +68,9 @@ $(document).ready(function () {
              if(dataMain.reportList[i].reportId===lireportId){
                  biaoji = i;
              }
+         }
+         if(addIndex=="0"){
+            render1(dataMain.reportList[biaoji]);
          }
          if(addIndex=="1"){
              render2(dataMain.reportList[biaoji]);
@@ -78,25 +82,11 @@ $(document).ready(function () {
          //点击确定
          $('.container').slideUp("fast");
          $(".mask").hide();
-        $(".tableTop").find(".second").find("span").click(function () {
-        var dataNum = $(".dataTables_scrollHeadInner").find("span").length;
-            if(dataNum===2){
-                $(this).siblings("img").show();
-                $(this).parent().css("backgroundColor","#fff");
-                cancel("second");
-            }else {
-                cancel("second","third");
-                $(".dataTables_scrollHeadInner").find(".third").find("img").show();
-                $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
-            }
-        });
-        $(".tableTop").find(".third").find("span").click(function () {
-            $(this).siblings("img").show();
-            $(this).parent().css("backgroundColor","#fff");
-            cancel("third");
-        });
+  
     });
- });
+});
+ 
+
 
     //点击列表中的li,进行渲染。
     
@@ -132,13 +122,19 @@ $(document).ready(function () {
 
     function del(){
     $(".tableTop").find(".first").find("span").click(function () {
-        var dataNum = $(".dataTables_scrollHeadInner").find("span").length;
+        var dataNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
         if(dataNum===1){
             alert("不能再删除了哦");
         }else if(dataNum===2){
-            cancel("first","second");
+            if($('.tableTop .third').find("span").hasClass("cancel")){
+                cancel("first");
+            $(".dataTables_scrollHeadInner").find(".first").find("img").show();
+            $(".dataTables_scrollHeadInner").find(".first").css("backgroundColor","#fff");
+            }else{
+               cancel("first","second");
             $(".dataTables_scrollHeadInner").find(".second").find("img").show();
-            $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");
+            $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");      
+            }
         }else {
             if($(".white1").find(".number").hasClass("text-warning")){
                 $(".white1").find(".number").removeClass("text-warning");
@@ -162,8 +158,8 @@ $(document).ready(function () {
 
         }
     });
-    $(".tableTop").find(".second").find("span").click(function () {
-        var dataNum = $(".dataTables_scrollHeadInner").find("span").length;
+    $(".tableTop").find(".second").find(".cancel").click(function () {
+        var dataNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
         if(dataNum===2){
             $(this).siblings("img").show();
             $(this).parent().css("backgroundColor","#fff");
@@ -174,7 +170,7 @@ $(document).ready(function () {
             $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
         }
     });
-    $(".tableTop").find(".third").find("span").click(function () {
+    $(".tableTop").find(".third").find(".cancel").click(function () {
         $(this).siblings("img").show();
         $(this).parent().css("backgroundColor","#fff");
         cancel("third");
@@ -386,8 +382,10 @@ function innerContainer(arr) {
                 $(".container ul").append($tt);                    
             }
         }
-});
 
+
+
+});
 
 var examType = [
     ["100", "身體質量指數BMI", "1", ""], ["101", "腰圍", "1", "公分"], ["102", "收縮壓", "1", "mmHg"], ["103", "舒張壓", "1", "mmHg"], ["104", "白血球WBC", "3", "10^3/uL"],
@@ -408,6 +406,113 @@ var examType = [
     ["175", "鈣", "10", "mg/dL"],["176", "血清磷", "10", "mg/dL"],["177", "四碘甲狀腺素", "11", "ug/dl"],["178", "大腸癌", "12", "ng/ml"],["179", "肝癌", "12", "ng/ml"],
     ["180", "胰臟癌", "12", "U/ml"],["181", "前列腺癌", "12", "ng/ml"]
 ];
+examType =  translate(examType);
+// document.write(examType);
+
+function translate(data){
+    var arrr1=[];
+    var arrr2=[];
+    var arrr3=[];
+    var arrr4=[];
+    var arrr5=[];
+    var arrr6=[];
+    var arrr7=[];
+    var arrr8=[];
+    var arrr9=[];
+    var arrr10=[];
+    var arrr11=[];
+    var arrr12=[];
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="1"){
+            arrr1.push(data[i]);
+
+        }
+    }
+    arrr1.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="2"){
+            arrr2.push(data[i]);
+
+        }
+    }
+    arrr2.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="3"){
+            arrr3.push(data[i]);
+
+        }
+    }
+    arrr3.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="4"){
+            arrr4.push(data[i]);
+
+        }
+    }
+    arrr4.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="5"){
+            arrr5.push(data[i]);
+
+        }
+    }
+    arrr5.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="6"){
+            arrr6.push(data[i]);
+
+        }
+    }
+    arrr6.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="7"){
+            arrr7.push(data[i]);
+
+        }
+    }
+    arrr7.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="8"){
+            arrr8.push(data[i]);
+
+        }
+    }
+    arrr8.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="9"){
+            arrr9.push(data[i]);
+
+        }
+    }
+    arrr9.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="10"){
+            arrr10.push(data[i]);
+
+        }
+    }
+    arrr10.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="11"){
+            arrr11.push(data[i]);
+
+        }
+    }
+    arrr11.reverse();
+    for(var i=0;i<data.length;i++){
+        if(data[i][2]==="12"){
+            arrr12.push(data[i]);
+
+        }
+    }
+    arrr12.reverse();
+    return  arrr1.concat(arrr2).concat(arrr3).concat(arrr4).concat(arrr5).concat(arrr6).concat(arrr7).concat(arrr8).concat(arrr9).concat(arrr10).concat(arrr11).concat(arrr12);
+
+}
+
+
+
+
 
 //例外：根据值来判断-尿糖115、尿蛋白116、尿潛血128、尿液顏色146、尿膽素原147、膽紅素148、酮體149、亞硝酸鹽151、尿結晶體156、尿圓柱體157、細菌158
 //1-無下限+無上限
@@ -2130,10 +2235,19 @@ function getRangeType(value){
 }
 
 
+
+ function unit(type){
+    for(var i=0;i<examType.length;i++){
+        if(examType[i][0]===type){
+            return examType[i][3];
+        }
+    }
+ }
 //通过范围类型来拼接字符串
 function getItemRange(type, value){
     var str = '';
     var testV = value.split(',')[0];
+    var trueUnit = unit(type);
     if(type=='115' || type=='116' || type=='128' || type=='146' || type=='147' || type=='148' || type=='149' || type=='151' || type=='156' || type=='157' || type=='158'){
         // 没有范围设定的
         if(!testV || testV=='-' || testV=='(-)' || testV=='Negative' || testV=='Normal') str = '';
@@ -2141,17 +2255,17 @@ function getItemRange(type, value){
         // 有范围设定的
         switch(getRangeType(value)) {
             case 1:
-                if(!examType[(+type)-100][3]){ //無單位
+                if(!trueUnit){ //無單位
                     str = '';
                 }else{ //有單位
-                    str = examType[(+type)-100][3];
+                    str = trueUnit;
                 }
                 break;
             case 2:
-                str ='<='+value.split(',')[2]+' '+examType[(+type)-100][3];
+                str ='<='+value.split(',')[2]+' '+trueUnit;
                 break;
             case 3:
-                str = '>='+value.split(',')[1]+' '+examType[(+type)-100][3];
+                str = '>='+value.split(',')[1]+' '+trueUnit;
                 break;
             case 4:
                 str = '正常';
@@ -2163,7 +2277,7 @@ function getItemRange(type, value){
                 str = '陰性|陽性';
                 break;
             case 7:
-                str = value.split(',')[1]+'-'+value.split(',')[2]+' '+examType[(+type)-100][3];
+                str = value.split(',')[1]+'-'+value.split(',')[2]+' '+trueUnit;
                 break;
             default:
                 break;
@@ -2350,7 +2464,7 @@ function cancel(cli,tar) {
         }
     }else {
         //如果还有填充的
-        if(cli=="first"){
+        if(cli==="first"){
             if($(".white1").find(".number").hasClass("text-warning")){
                 $(".white1").find(".number").removeClass("text-warning");
             }
@@ -2381,6 +2495,69 @@ function cancel(cli,tar) {
          }
     }
 
+}
+
+
+
+function delAfter(){
+    $(".tableTop .first").find(".cancel").click(function(){
+        var newNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
+        if(newNum===1){
+            // cancel("first");
+            // $(".dataTables_scrollHeadInner").find(".first").find("img").show();
+            // $(".dataTables_scrollHeadInner").find(".first").css("backgroundColor","#fff");
+            alert("不能再删除了哦")
+        }else if(newNum===2){
+                if($(".tableTop .second").find("span").hasClass(".cancel")){
+                    cancel("first","second");
+                    $(".dataTables_scrollHeadInner").find(".second").find("img").show();
+                    $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");
+                }else{
+                    cancel("first");
+                    $(".dataTables_scrollHeadInner").find(".first").find("img").show();
+                    $(".dataTables_scrollHeadInner").find(".first").css("backgroundColor","#fff");
+                }
+        }else{
+             if($(".white1").find(".number").hasClass("text-warning")){
+                    $(".white1").find(".number").removeClass("text-warning");
+            }
+            var time = $(".second").find(".date").text();
+            var reportName = $(".second").find(".reportName").text();
+            var ii = $(".second").find("i").text();
+            $(".dataTables_scrollHeadInner").find(".first").find(".date").html(time).siblings(".reportName").html(reportName);
+            $(".dataTables_scrollHeadInner").find(".first").find("i").html(ii);
+            for(var i=0;i<82;i++){
+                $this = $(".white1").eq(i);
+                $this.find(".number").text($this.siblings(".white2").find(".number").text());
+                $this.find(".unit").text($this.siblings(".white2").find(".unit").text());
+                if($this.siblings(".white2").find(".number").hasClass("text-warning")){
+                    $this.find(".number").addClass("text-warning");
+                }
+            }
+            cancel("second","third");
+            $(".dataTables_scrollHeadInner").find(".third").find("img").show();
+            $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
+        }
+    });
+    $(".tableTop .second").find(".cancel").click(function(){
+        var newNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
+        if(newNum===3){
+            cancel("second","third");
+            $(".dataTables_scrollHeadInner").find(".third").find("img").show();
+            $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
+
+        }else {
+            cancel("second");
+            $(".dataTables_scrollHeadInner").find(".second").find("img").show();
+            $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");
+        }
+    });
+    $(".tableTop .third").find(".cancel").click(function(){
+        var newNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
+        cancel("third");
+        $(".dataTables_scrollHeadInner").find(".third").find("img").show();
+        $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
+    })
 }
 
 
