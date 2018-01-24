@@ -1,3 +1,9 @@
+/*
+ * @Author: 21746209
+ * @Date:   2018-01-17 11:53:59
+ * @Last Modified by:   21746209
+ * @Last Modified time: 2018-01-22 11:21:15
+ */
 $(document).ready(function () {
 
 
@@ -19,10 +25,13 @@ $(document).ready(function () {
     //先发送请求得到所需的数据，然后渲染
 
     var reportIds = [];
+    // newRequest();
     request(dataMain);
     renderRed();
     toggle();
     delAfter();
+
+
 
     //此时再点击加号的时候,循环此时的reportId
 
@@ -60,38 +69,55 @@ $(document).ready(function () {
             $('.container').hide();
             $(".mask").hide();
         });
-                $(".container .cut").click(function() {
-         $(this).css({"backgroundColor":"#99CC99","color":"#000"});
-         var lireportId = $(this).find(".littleId").text();
-         var bioaji = "";
-         for(var i=0;i<dataMain.reportList.length;i++){
-             if(dataMain.reportList[i].reportId===lireportId){
-                 biaoji = i;
-             }
-         }
-         if(addIndex=="0"){
-            render1(dataMain.reportList[biaoji]);
-         }
-         if(addIndex=="1"){
-             render2(dataMain.reportList[biaoji]);
-             console.log("我要渲染第二行");
-         }else if(addIndex=="2"){
-             render3(dataMain.reportList[biaoji]);
-             console.log("我要渲染第三行");
-         }
-         //点击确定
-         $('.container').slideUp("fast");
-         $(".mask").hide();
-  
+        $(".container .cut").click(function() {
+            $(this).css({"backgroundColor":"#99CC99","color":"#000"});
+            var lireportId = $(this).find(".littleId").text();
+            var bioaji;
+            for(var i=0;i<dataMain.reportList.length;i++){
+                if(dataMain.reportList[i].reportId===lireportId){
+                    biaoji = i;
+                }
+            }
+            if(addIndex=="0"){
+                render1(dataMain.reportList[biaoji]);
+                repeat();
+            }
+            if(addIndex=="1"){
+                render2(dataMain.reportList[biaoji]);
+                repeat();
+            }else if(addIndex=="2"){
+                render3(dataMain.reportList[biaoji]);
+                repeat();
+            }
+            //点击确定
+            $('.container').slideUp("fast");
+            $(".mask").hide();
+            // $(".tableTop").find(".second").find(".cancel").click(function () {
+            //     var dataNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
+            //     if(dataNum===2){
+            //         $(this).siblings("img").show();
+            //         $(this).parent().css("backgroundColor","#fff");
+            //         cancel("second");
+            //         repeat();
+            //     }else {
+            //         cancel("second","third");
+            //         repeat();
+            //         $(".dataTables_scrollHeadInner").find(".third").find("img").show();
+            //         $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
+            //     }
+            // });
+            // $(".tableTop").find(".third").find(".cancel").click(function () {
+            //     $(this).siblings("img").show();
+            //     $(this).parent().css("backgroundColor","#fff");
+            //     cancel("third");
+            //     repeat();
+            // });
+        });
     });
-});
- 
+
 
 
     //点击列表中的li,进行渲染。
-    
-    
-
 
 
     //左上角切换事事件
@@ -108,74 +134,14 @@ $(document).ready(function () {
     });
     $(".tableToggle span").eq(2).click(function () {
         $(".title th").addClass("blue").removeClass("yellow");
-        $(".tableBody .detail").show();
-        renderRed();
-        $(".disper").hide();
-        $(".tableBody .detail").addClass("wo");
-        $(".wo").hide();
-        $(".disper").show();
+        repeat();
     });
 
 
 
-    //点击减号删除
 
-    function del(){
-    $(".tableTop").find(".first").find("span").click(function () {
-        var dataNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
-        if(dataNum===1){
-            alert("不能再删除了哦");
-        }else if(dataNum===2){
-            if($('.tableTop .third').find("span").hasClass("cancel")){
-                cancel("first");
-            $(".dataTables_scrollHeadInner").find(".first").find("img").show();
-            $(".dataTables_scrollHeadInner").find(".first").css("backgroundColor","#fff");
-            }else{
-               cancel("first","second");
-            $(".dataTables_scrollHeadInner").find(".second").find("img").show();
-            $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");      
-            }
-        }else {
-            if($(".white1").find(".number").hasClass("text-warning")){
-                $(".white1").find(".number").removeClass("text-warning");
-            }
-            var time = $(".second").find(".date").text();
-            var reportName = $(".second").find(".reportName").text();
-            var ii = $(".second").find("i").text();
-            $(".dataTables_scrollHeadInner").find(".first").find(".date").html(time).siblings(".reportName").html(reportName);
-            $(".dataTables_scrollHeadInner").find(".first").find("i").html(ii);
-            for(var i=0;i<82;i++){
-                $this = $(".white1").eq(i);
-                $this.find(".number").text($this.siblings(".white2").find(".number").text());
-                $this.find(".unit").text($this.siblings(".white2").find(".unit").text());
-                if($this.siblings(".white2").find(".number").hasClass("text-warning")){
-                    $this.find(".number").addClass("text-warning");
-                }
-            }
-            cancel("second","third");
-            $(".dataTables_scrollHeadInner").find(".third").find("img").show();
-            $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
 
-        }
-    });
-    $(".tableTop").find(".second").find(".cancel").click(function () {
-        var dataNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
-        if(dataNum===2){
-            $(this).siblings("img").show();
-            $(this).parent().css("backgroundColor","#fff");
-            cancel("second");
-        }else {
-            cancel("second","third");
-            $(".dataTables_scrollHeadInner").find(".third").find("img").show();
-            $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
-        }
-    });
-    $(".tableTop").find(".third").find(".cancel").click(function () {
-        $(this).siblings("img").show();
-        $(this).parent().css("backgroundColor","#fff");
-        cancel("third");
-    });
-    }
+
 
     //初始填充请求
     function request(data){
@@ -193,10 +159,11 @@ $(document).ready(function () {
         }
     }
 
+
 // 先把所有的都渲染出来，再剔除
 //内容填充
 //渲染第一栏
-function render1(data) {
+    function render1(data) {
         var str = "<span class="+'cancel'+"></span>";
         var st = "<i class='empty'>"+data.reportId+"</i>";
         $(".tableTop .first").eq(0).append(st);
@@ -224,13 +191,13 @@ function render1(data) {
             }
             $("tr."+num).find(".white1").html(s);
             if((val=='異常') || (val=='异常') || differ==1){
-                $("tr."+num).find(".white1").find(".number").addClass("text-warning").parent().parent().addClass("disper");
+                $("tr."+num).find(".white1").find(".number").addClass("text-warning");
             }
         });
     }
 
 //渲染第二栏
-function render2(data) {
+    function render2(data) {
         var str = "<span class="+'cancel'+"></span>";
         var st = "<i class='empty'>"+data.reportId+"</i>";
         $(".tableTop .second").eq(0).append(st);
@@ -261,11 +228,10 @@ function render2(data) {
                 $("tr."+num).find(".white2").find(".number").addClass("text-warning").parent().parent().addClass("disper");
             }
         })
-
     }
 
 //渲染第三栏
-function render3(data) {
+    function render3(data) {
         var str = "<span class="+'cancel'+"></span>";
         var st = "<i class='empty'>"+data.reportId+"</i>";
         $(".tableTop .third").eq(0).append(st);
@@ -296,92 +262,41 @@ function render3(data) {
                 $("tr."+num).find(".white3").find(".number").addClass("text-warning").parent().parent().addClass("disper");
             }
         })
-}
-
-
-function render4(data){
-        var str = "<span class="+'cancel'+"></span>";
-        var st = "<i class='empty'>"+data.reportId+"</i>";
-        $(".tableTop .third").eq(0).append(st);
-        $(".tableTop .third").eq(0).append(str);
-        var time = formatDate(data.reportTime);
-        $(".tableTop .third").find(".date").text(time).siblings(".reportName").text(data.reportName);
-        $(".tableTop .third").css("backgroundColor","#F1FEF4").find("img").hide();
-        $.each(data.itemList,function (i,v) {
-            num = v.type;
-            differ = getItemDiffer(v.type,v.value);
-            range = getItemRange(v.type,v.value);
-            val = v.value.split(",")[0];
-            if(range!==""){
-                if(val===""){
-                    s = "<p class="+'number'+">-</p>";
-                }else {
-                    s = "<p class="+'number'+">"+val+"</p><p class="+'unit'+">("+range+")</p>"
-                }
-            }else {
-                if(val===""){
-                    s = "<p class="+'number'+">-</p>";
-                }else {
-                    s = "<p class="+'number'+">"+val+"</p>"
-                }
-            }
-                $("tr."+num).find(".white3").html(s);
-                if((val=='異常') || (val=='异常') || differ==1){
-                $("tr."+num).find(".white3").find(".number").addClass("text-warning").parent().parent().addClass("disper");
-            }
-    })
-}
-//异常渲染
-function renderRed() {
-        var allNum =  $(".text-warning").parent().siblings("th");
-        var name = "";
-        var con=[];
-        for(var j=0;j<examType.length;j++){
-            for(var i=0;i<allNum.length;i++){
-                name = allNum[i].className;
-                if(examType[j][0]===name){
-                    con.push(examType[j][2]);
-                }
-            }
-        }
-        var cont = unique(con);
-        for(var k=0;k<cont.length;k++){
-            $("#item"+cont[k]).find("th").addClass("red");
-        }
     }
 
-function innerContainer(arr) {
-                //传值修改                
-                var arr2 = []
-                for (var t = 0; t<arr.length; t++){
-                    arr2[t] = arr[t]
+
+    function innerContainer(arr) {
+        //传值修改
+        var arr2 = [];
+        for (var t = 0; t<arr.length; t++){
+            arr2[t] = arr[t]
+        }
+        $(".container .cut").remove();
+        var nArr=[];
+        var len = $(".tableTop th").find("i").length;
+        for(var s=0;s<len;s++){
+            nArr.push($(".tableTop th").find("i").eq(s).text());
+        }
+
+        for(var i=0;i<arr2.length;i++){
+            for(var k=0;k<nArr.length;k++){
+                if(arr2[i]===nArr[k]){
+                    removeNum(arr2,nArr[k]);
                 }
-                $(".container .cut").remove();
-                var nArr=[]; 
-                var len = $(".tableTop th").find("i").length;
-                for(var s=0;s<len;s++){
-                    nArr.push($(".tableTop th").find("i").eq(s).text());
-                }
-            
-                for(var i=0;i<arr2.length;i++){
-                    for(var k=0;k<nArr.length;k++){
-                    if(arr2[i]===nArr[k]){
-                      removeNum(arr2,nArr[k]); 
-                    }
-                }
-           }
-                // 已经得到最新的arr
-                for(var i=0;i<arr2.length;i++){
-                  var $tt = $(".container .template").clone().removeClass("template").addClass("cut");
-                    for(var j=0;j<dataMain.reportList.length;j++){
-                        if(dataMain.reportList[j].reportId===arr2[i]){
-                            $tt.find(".littleName").text(dataMain.reportList[j].reportName);
-                            $tt.find(".littleId").text(dataMain.reportList[j].reportId);
-                        }
-                    } 
-                $(".container ul").append($tt);                    
             }
         }
+        // 已经得到最新的arr
+        for(var i=0;i<arr2.length;i++){
+            var $tt = $(".container .template").clone().removeClass("template").addClass("cut");
+            for(var j=0;j<dataMain.reportList.length;j++){
+                if(dataMain.reportList[j].reportId===arr2[i]){
+                    $tt.find(".littleName").text(dataMain.reportList[j].reportName);
+                    $tt.find(".littleId").text(dataMain.reportList[j].reportId);
+                }
+            }
+            $(".container ul").append($tt);
+        }
+    }
 
 
 
@@ -522,18 +437,40 @@ function translate(data){
 //5-無明顯異常
 //6-陰性|陽性
 //7-有下限+有上限
+
+
+
+
+// function newRequest(){
+//     var reportIds = getParameter("reportIds");
+//     var uid = getParameter("uid");
+//     if(reportIds && uid){
+//         $.ajax({
+//             type: "POST",
+//             url: "/api/getHealthReportCompareDetail",
+//             data:{
+//                 reportIds: reportIds,
+//                 uid: uid
+//             },
+//             dataType: "json",
+//             success: function(data){
+//                 dataMain = data;
+//             }
+//         })
+//     }
+// }
 var dataMain= {
     "status":"true",
     "reportList": [
-            {
-                "reportId":"11111",
-                "reportTime":1515054003215,
-                "reportName":"大家的健检报告",
-                "itemList": [{
+        {
+            "reportId":"11111",
+            "reportTime":1515054003215,
+            "reportName":"大家的健检报告",
+            "itemList": [{
                 "unit": "",
                 "value": "77,18.5,24",
                 "type": "100"
-                },
+            },
                 {
                     "unit": "¤½¤À",
                     "value": "120,0,90",
@@ -931,7 +868,7 @@ var dataMain= {
                 },
                 {
                     "unit": "U/ml",
-                    "value": "4.65,0,27",
+                    "value": "65,0,27",
                     "type": "180"
                 },
                 {
@@ -939,12 +876,12 @@ var dataMain= {
                     "value": "0.72,0,4",
                     "type": "181"
                 }]
-            },
-            {
-                "reportId":"22222",
-                "reportTime":1515654803215,
-                "reportName":"医生的健检报告",
-                "itemList": [{
+        },
+        {
+            "reportId":"22222",
+            "reportTime":1515654803215,
+            "reportName":"医生的健检报告",
+            "itemList": [{
                 "unit": "",
                 "value": "77,18.5,24",
                 "type": "100"
@@ -1355,7 +1292,7 @@ var dataMain= {
                     "type": "181"
                 }]
         },
-            {"reportId":"33333",
+        {"reportId":"33333",
             "reportTime":1510639803015,
             "reportName":"华清池健检报告",
             "itemList": [{
@@ -1365,12 +1302,12 @@ var dataMain= {
             },
                 {
                     "unit": "¤½¤À",
-                    "value": "15,0,90",
+                    "value": "150,0,90",
                     "type": "101"
                 },
                 {
                     "unit": "mmHg",
-                    "value": "120,90,140",
+                    "value": "10,90,140",
                     "type": "102"
                 },
                 {
@@ -1769,7 +1706,7 @@ var dataMain= {
                     "type": "181"
                 }]
         },
-                    {"reportId":"66666",
+        {"reportId":"66666",
             "reportTime":1510639803015,
             "reportName":"长林王健检报告",
             "itemList": [{
@@ -2183,8 +2120,8 @@ var dataMain= {
                     "type": "181"
                 }]
         }
-        ]
-    }
+    ]
+}
 
 
 //把時間戳轉為年月日
@@ -2236,13 +2173,16 @@ function getRangeType(value){
 
 
 
- function unit(type){
+function unit(type){
     for(var i=0;i<examType.length;i++){
         if(examType[i][0]===type){
             return examType[i][3];
         }
     }
- }
+}
+
+
+
 //通过范围类型来拼接字符串
 function getItemRange(type, value){
     var str = '';
@@ -2431,12 +2371,12 @@ function toggle() {
 // cancel事件
 //判断点击的是第几个，移动的就是第几个，
 //首先就是确定参数
-// 没目标只执行删除,不进行移动
+//没目标只执行删除,不进行移动
 //所以就要先判定当前有几条健检报告
-// 当有一条没反应，且提醒
-// 有两条删除点1执行tar,点2只删除
-// 有三条第三条不执行，其余两条都执行tar,且移动第一次有两次转移
-// 例如cli=first,tar=second
+//当有一条没反应，且提醒
+//有两条删除点1执行tar,点2只删除
+//有三条第三条不执行，其余两条都执行tar,且移动第一次有两次转移
+//例如cli=first,tar=second
 function tianChong(s,t) {
     for(var i=0;i<82;i++){
         $this = $("."+s).eq(i);
@@ -2464,7 +2404,7 @@ function cancel(cli,tar) {
         }
     }else {
         //如果还有填充的
-        if(cli==="first"){
+        if(cli==="first"&&tar==="second"){
             if($(".white1").find(".number").hasClass("text-warning")){
                 $(".white1").find(".number").removeClass("text-warning");
             }
@@ -2473,12 +2413,13 @@ function cancel(cli,tar) {
             var ii = $("."+tar).find("i").text();
             $(".tableTop").find("."+cli).find(".date").html(time).siblings(".reportName").html(reportName);
             $(".tableTop").find("."+cli).find("i").html(ii);
+            //交换规则
             tianChong("white1","white2");
             $(".tableTop").find("."+tar).find(".date").html("").siblings(".reportName").html("");
             $(".tableTop").find("."+tar).find("span").remove();
             $(".tableTop").find("."+tar).find("i").remove();
             $(".white2").html("");
-        }else if(cli==="second") {
+        }else if(cli==="second"&&tar==="third") {
             if($(".white2").find(".number").hasClass("text-warning")){
                 $(".white2").find(".number").removeClass("text-warning");
             }
@@ -2492,34 +2433,31 @@ function cancel(cli,tar) {
             $(".tableTop").find("."+tar).find("span").remove();
             $(".tableTop").find("."+tar).find("i").remove();
             $(".white3").html("");
-         }
+        }
     }
-
 }
 
 
 
-function delAfter(){
+function delAfter() {
     $(".tableTop .first").find(".cancel").click(function(){
         var newNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
+        console.log(newNum);
         if(newNum===1){
             // cancel("first");
             // $(".dataTables_scrollHeadInner").find(".first").find("img").show();
             // $(".dataTables_scrollHeadInner").find(".first").css("backgroundColor","#fff");
             alert("不能再删除了哦")
         }else if(newNum===2){
-                if($(".tableTop .second").find("span").hasClass(".cancel")){
-                    cancel("first","second");
-                    $(".dataTables_scrollHeadInner").find(".second").find("img").show();
-                    $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");
-                }else{
-                    cancel("first");
-                    $(".dataTables_scrollHeadInner").find(".first").find("img").show();
-                    $(".dataTables_scrollHeadInner").find(".first").css("backgroundColor","#fff");
-                }
+                cancel("first","second");
+                repeat();
+                $(".dataTables_scrollHeadInner").find(".second").find("img").show();
+                $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");
+
         }else{
-             if($(".white1").find(".number").hasClass("text-warning")){
-                    $(".white1").find(".number").removeClass("text-warning");
+            //交换和取消
+            if($(".white1").find(".number").hasClass("text-warning")){
+                $(".white1").find(".number").removeClass("text-warning");
             }
             var time = $(".second").find(".date").text();
             var reportName = $(".second").find(".reportName").text();
@@ -2535,6 +2473,7 @@ function delAfter(){
                 }
             }
             cancel("second","third");
+            repeat();
             $(".dataTables_scrollHeadInner").find(".third").find("img").show();
             $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
         }
@@ -2543,11 +2482,13 @@ function delAfter(){
         var newNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
         if(newNum===3){
             cancel("second","third");
+            repeat();
             $(".dataTables_scrollHeadInner").find(".third").find("img").show();
             $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
 
         }else {
             cancel("second");
+            repeat();
             $(".dataTables_scrollHeadInner").find(".second").find("img").show();
             $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");
         }
@@ -2555,10 +2496,125 @@ function delAfter(){
     $(".tableTop .third").find(".cancel").click(function(){
         var newNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
         cancel("third");
+        repeat();
         $(".dataTables_scrollHeadInner").find(".third").find("img").show();
         $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
     })
 }
+
+// function delAfter(){
+//     $(".tableTop .first").find(".cancel").click(function(){
+//         var newNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
+//         if(newNum===1){
+//             // cancel("first");
+//             // $(".dataTables_scrollHeadInner").find(".first").find("img").show();
+//             // $(".dataTables_scrollHeadInner").find(".first").css("backgroundColor","#fff");
+//             alert("不能再删除了哦")
+//         }else if(newNum===2){
+//             if($(".tableTop .second").find("span").hasClass(".cancel")){
+//                 cancel("first","second");
+//                 $(".dataTables_scrollHeadInner").find(".second").find("img").show();
+//                 $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");
+//             }else{
+//                 cancel("first");
+//                 $(".dataTables_scrollHeadInner").find(".first").find("img").show();
+//                 $(".dataTables_scrollHeadInner").find(".first").css("backgroundColor","#fff");
+//             }
+//         }else{
+//             if($(".white1").find(".number").hasClass("text-warning")){
+//                 $(".white1").find(".number").removeClass("text-warning");
+//             }
+//             var time = $(".second").find(".date").text();
+//             var reportName = $(".second").find(".reportName").text();
+//             var ii = $(".second").find("i").text();
+//             $(".dataTables_scrollHeadInner").find(".first").find(".date").html(time).siblings(".reportName").html(reportName);
+//             $(".dataTables_scrollHeadInner").find(".first").find("i").html(ii);
+//             for(var i=0;i<82;i++){
+//                 $this = $(".white1").eq(i);
+//                 $this.find(".number").text($this.siblings(".white2").find(".number").text());
+//                 $this.find(".unit").text($this.siblings(".white2").find(".unit").text());
+//                 if($this.siblings(".white2").find(".number").hasClass("text-warning")){
+//                     $this.find(".number").addClass("text-warning");
+//                 }
+//             }
+//             cancel("second","third");
+//             $(".dataTables_scrollHeadInner").find(".third").find("img").show();
+//             $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
+//         }
+//     });
+//     $(".tableTop .second").find(".cancel").click(function(){
+//         var newNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
+//         if(newNum===3){
+//             cancel("second","third");
+//             $(".dataTables_scrollHeadInner").find(".third").find("img").show();
+//             $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
+//
+//         }else {
+//             cancel("second");
+//             $(".dataTables_scrollHeadInner").find(".second").find("img").show();
+//             $(".dataTables_scrollHeadInner").find(".second").css("backgroundColor","#fff");
+//         }
+//     });
+//     $(".tableTop .third").find(".cancel").click(function(){
+//         var newNum = $(".dataTables_scrollHeadInner").find(".cancel").length;
+//         cancel("third");
+//         $(".dataTables_scrollHeadInner").find(".third").find("img").show();
+//         $(".dataTables_scrollHeadInner").find(".third").css("backgroundColor","#fff");
+//     })
+// }
+
+
+//一开始就渲染了
+//把所有的disper和wo类都删除，渲染加的点也删除，然后找text-warning,有text-warning的这一个title就加点，有text-warning的这一行就显示。
+function repeat(){
+    $(".tableBody .detail").removeClass("wo");
+    $(".tableBody .detail").removeClass("disper");
+    var lee = $(".text-warning").parent().parent(".detail").length;
+    var myArr = [];
+    for(var i=0;i<lee;i++){
+        var hih = $(".text-warning").parent().parent(".detail").eq(i).attr("class").split(" ")[1];
+        myArr.push(hih);
+    }
+    for(var j=0;j<myArr.length;j++){
+        $("tr."+myArr[j]).addClass("disper");
+    }
+    $(".tableBody .detail").show();
+    renderRed();
+    $(".detail").addClass('wo').hide();
+    $(".disper").show();
+
+}
+
+
+//异常渲染
+function renderRed() {
+    for(var i=1;i<13;i++){
+        $("#item"+i).find("th").removeClass("red");
+    }
+    var lee = $(".text-warning").parent().parent(".detail").length;
+    var myArr = [];
+    var name = "";
+    var con=[];
+    for(var i=0;i<lee;i++){
+        var hih = $(".text-warning").parent().parent(".detail").eq(i).attr("class").split(" ")[1];
+        myArr.push(hih);
+    }
+
+    for(var j=0;j<examType.length;j++){
+        for(var i=0;i<myArr.length;i++){
+            name = myArr[i];
+            if(examType[j][0]===name){
+                con.push(examType[j][2]);
+            }
+        }
+    }
+    var cont = unique(con);
+    for(var k=0;k<cont.length;k++){
+        $("#item"+cont[k]).find("th").addClass("red");
+    }
+}
+
+
 
 
 
