@@ -173,9 +173,14 @@ table {
   border-right: 1px solid #D3D8DE;
   position: relative;
 }
+.tableBody .title th p {
+  width: 2.66666667rem;
+}
 .tableBody .title th.red:after {
   content: "";
   position: absolute;
+  top: 5px;
+  right: 11px;
   width: 8px;
   height: 8px;
   border: 1px solid #fff;
